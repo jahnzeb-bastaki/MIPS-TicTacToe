@@ -1,2 +1,2 @@
 # Tic-Tac-Toe
-Tic-Tac-Toe Game made our Computer ArchitectureClass 
+Tic-Tac-Toe Game made our Computer Architecture Class 
