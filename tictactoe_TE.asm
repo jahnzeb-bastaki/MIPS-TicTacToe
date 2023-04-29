@@ -1,5 +1,22 @@
 
 
+.data 
+
+prompt1:   .asciiz "Welcome to a game of Tic-Tac-Toe! Are you ready to play?"
+prompt2:   .asciiz "The Computer will now make its move." 
+prompt3:   .asciiz "Your turn. Pick a space with its corresponding number." 
+
+##Board Elements## 
+
+boardNums: .asciiz "0123456789"
+line: .byte '|'
+tab:  .byte '\n'
+X:    .byte 'X'
+O:    .byte 'O' 
+
+
+
+
 ##PRINTING THE BOARD## 
 
 addiu $sp, $sp, -4          #get some stack space 
@@ -14,7 +31,7 @@ addiu $sp, $sp, 4           #return the same space we allocated
 ##O - ASSIGNED TO THE HUMAN##
 
 li $v0, 4                   #print the prompt for getting the computer’s move
-la $a0, MSG2 
+la $a0, prompt2 
 syscall 
 
 addiu $sp, $sp, -4          #this gets a word from the stack 
@@ -58,7 +75,7 @@ addiu $sp, $sp, 4           #return the same space we allocated
 ##GETTING THE COMPUTER’S SECOND MOVE##
 
 li $v0, 4                   #print the prompt for getting the computer’s move
-la $a0, MSG2 
+la $a0, prompt2  
 syscall 
 
 addiu $sp, $sp, -4          #this gets a word from the stack 
@@ -100,7 +117,7 @@ addiu $sp, $sp, 4
 ## COMPUTER’S THIRD MOVE##
 
 li $v0, 4                   #print the prompt for getting the computer’s move
-la $a0, MSG2 
+la $a0, prompt2  
 syscall 
 
 addiu $sp, $sp, -4          #this gets a word from the stack 
@@ -161,7 +178,7 @@ bnez $v0, W                 #if 0 is being returned, a winner is concluded
 ## COMPUTER’S FOURTH MOVE##
 
 li $v0, 4                   #print the prompt for getting the computer’s move
-la $a0, MSG2 
+la $a0, prompt2  
 syscall 
 
 addiu $sp, $sp, -4 #this gets a word from the stack 
@@ -221,7 +238,7 @@ bnez $v0, W                 #if 0 is being returned, a winner is concluded
 ## COMPUTER’S FIFTH MOVE##
 
 li $v0, 4                   #print the prompt for getting the computer’s move
-la $a0, MSG2 
+la $a0, prompt2  
 syscall 
 
 addiu $sp, $sp, -4          #this gets a word from the stack 
