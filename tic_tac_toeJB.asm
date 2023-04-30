@@ -17,6 +17,8 @@ invalidprompt2:		.asciiz "\nPLAYER has choose space that is already taken\nPleas
 breakline:		.asciiz "-\t-\t-\t-\t-\t-\t-\t-\t-\t-\n\n"
 computerPrompt:		.asciiz "\nCOMPUTER has put O in cell "
 tiePrompt:		.asciiz "\nNeither PLAYER nor COMPUTER has won the game, the game is a tie!\n"
+playerWinsPrompt:	.asciiz "\nPLAYER has won the game! Good Job! \n"
+ComputerWinsPrompt:	.asciiz "\nCOMPUTER has won the game! Better luck next time! \n"
 board:			.byte   ' ' , ' ', ' ', ' ' , ' ', ' ', ' ' , ' ', ' '
 #board:			.byte	'X' , 'O' , 'X', 'O', 'X', 'O', 'X', 'O', 'X'
 
@@ -30,12 +32,14 @@ mainLoop:
 	jal	userInput
 	jal	displayBoard
 	# check to see winner, if there is winner, game will end in winner
+	jal	checkWin
 	addi	$s0, $s0, 1		# increment s0 by one
 	beq	$s0, $s1, tieGame	# check to see if the game has tied
 	
 	jal	computerInput
 	jal	displayBoard
 	#check to see winner, if winner game will end in winner
+	jal	checkWin
 	addi	$s0, $s0, 1
 	beq	$s0, $s1, tieGame	
 	
@@ -44,9 +48,8 @@ tieGame:
 	li	$v0, 4
 	la	$a0, tiePrompt
 	syscall
-	# End program
-	li	$v0, 10			
-	syscall
+	
+	jal	exitProgram
 ######################## End of main ###########################
 
 ######################## start of displayBoard #################
@@ -215,3 +218,93 @@ validComputerSpace:
     	jr	$ra
 ######################## End of Computer Input ##################
 
+######################## Start of Check for Winner ##############
+checkWin:
+	li	$t7, 3
+	li	$t6, 32
+	li	$t5, 3
+	la	$s2, board
+	# first we will check the rows
+	# to check row, need to loop through by using 3n, 3n+1, and 3n+2
+	li	$t0, 0
+rowLoop:
+	beq	$t0, $t5, rowExit
+	move	$t4, $t0		# to not change the value of t0
+	mult	$t4, $t7		
+	mflo	$t1			# 3n
+	
+	add	$t2, $t1, 1		#3n+1
+	add	$t3, $t1, 2		#3n+2
+	add	$t1, $t1, $s2		# add t1 to board base address
+	add	$t2, $t2, $s2		# add t2 to board base address
+	add	$t3, $t3, $s2		# add t3 to board base address
+	lbu	$t1, 0($t1)		# load character into t1
+	lbu	$t2, 0($t2)		# load character into t2
+	lbu	$t3, 0($t3)		# load character into t3
+	addi	$t0, $t0, 1
+	bne	$t1, $t2, rowLoop	# if t1 and t2 do not equal each other, branch to rowExit
+	bne	$t1, $t3, rowLoop	# if t1 and t3 do not equal each other, branch to rowExit
+	bne	$t1, $t6, checkWinner
+	j	rowLoop
+rowExit:
+	# then we check the columns
+	# to check the columns we will need to loop through by adding 0,3, and 6 respectively to counter
+	li	$t0, 0
+columnLoop:
+	beq	$t0, $t5, columnExit
+	addi	$t1, $t0, 0		# t1 + 0
+	addi	$t2, $t0, 3		# t2 + 3		
+	addi	$t3, $t0, 6		# t3 + 6
+	add	$t1, $t1, $s2		# add t1 to board base address
+	add	$t2, $t2, $s2		# add t2 to board base address
+	add	$t3, $t3, $s2		# add t3 to board base address
+	lbu	$t1, 0($t1)		# load character into t1
+	lbu	$t2, 0($t2)		# load character into t2
+	lbu	$t3, 0($t3)		# load character into t3
+	addi	$t0, $t0, 1
+	bne	$t1, $t2, columnLoop	# if t1 and t2 do not equal each other, branch to columnExit
+	bne	$t1, $t3, columnLoop	# if t1 and t3 do not equal each other, branch to columnExit
+	bne	$t1, $t6, checkWinner
+	j	columnLoop
+columnExit:
+	
+	#for diagonals, manually check for both left to right and right to left
+leftToRight:
+	lbu	$t1, 0($s2)		# load character with specified offset 0
+	lbu	$t2, 4($s2)		# load character with specified offset 4
+	lbu	$t3, 8($s2)		# load character with specified offset 8
+	bne	$t1, $t2, rightToLeft	# if t1 and t2 do not equal each other, branch to columnExit
+	bne	$t1, $t3, rightToLeft	# if t1 and t3 do not equal each other, branch to columnExit
+	bne	$t1, $t6, checkWinner
+rightToLeft:
+	lbu	$t1, 2($s2)		# load character with specified offset 0
+	lbu	$t2, 4($s2)		# load character with specified offset 4
+	lbu	$t3, 6($s2)		# load character with specified offset 8
+	bne	$t1, $t2, exitcheckWinner	# if t1 and t2 do not equal each other, branch to columnExit
+	bne	$t1, $t3, exitcheckWinner	# if t1 and t3 do not equal each other, branch to columnExit
+	bne	$t1, $t6, checkWinner
+exitcheckWinner:
+	jr	$ra
+	# if we do get a winner, check winner here, prompt message of who won, and end program
+checkWinner:
+	li	$t2, 88		# ASCII value of 'X'
+	li	$t3, 79		# ASCII value of 'O'
+	
+	beq	$t1, $t2, playerWins
+	beq	$t1, $t3, computerWins
+	
+playerWins:
+	li	$v0, 4
+	la	$a0, playerWinsPrompt
+	syscall
+	jal	exitProgram
+	
+computerWins:
+	li	$v0, 4
+	la	$a0, ComputerWinsPrompt
+	syscall
+	jal	exitProgram	
+exitProgram: 
+	# End program
+	li	$v0, 10			
+	syscall
