@@ -26,9 +26,9 @@ board:			.byte   ' ' , ' ', ' ', ' ' , ' ', ' ', ' ' , ' ', ' '
 
 .text
 main:
-	j	printInstruction
 	li	$s0, 0		# counter for moves
 	li	$s1, 9		# max number of moves in the game
+	j 	printInstruction
 	
 OLoop:	jal	computerInput
 	jal	displayBoard
