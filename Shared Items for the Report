@@ -6,7 +6,7 @@
 a. Trisha Espana
 b. Kae Lewis
 c. Hawre Mohammed
-d.
+d. Jahnzeb Bastaki
 
 #################### 2. CONTRIBUTIONS ################################## 
 
@@ -23,12 +23,26 @@ everyone - has their own unique contributions to the overall program, such as (l
          - communicated through discord and github 
          
          
-  a. Trisha - description of the program (Project report (1a)) 
-            - github file (created own program for idea suggestion and reference) 
-            -video about demonstration of the program
-            - word file / reformatted and organized to be used as template 
+  a. Trisha Espana:
+         - description of the program (Project report (1a)) 
+         - github file (created own program for idea suggestion and reference) 
+         - video about demonstration of the program
+         - word file / reformatted and organized to be used as template
+         - Created the User Input of the program
+         
+  b. Kae Lewis: 
+         - Created the main section of the MIPS program
+         - Created the displayBoard section of the MIPS program
+
+  c. Hawre Mohammed: 
+         - Algorithms and Techniques Used in the Program
+         - Helped create the instructions section of the MIPS program
   
-  Hawre -  Algorithms and Techniques Used in the Program
+  
+  d. Jahnzeb Bastaki:
+         - Built the Win Condition for the MIPS program
+         - Built the Computer Input for the MIPS program
+         - Helped create the User Manual
             
 
 #################### 3. ALGORITHMS & TECHNIQUES ##################################
