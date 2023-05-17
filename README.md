@@ -5,7 +5,7 @@ Welcome to our implementation of Tic Tic Toe using MIPS Assembly Language. In th
 ## Getting Started
 To get started in running the application, first ensure that you have a MIPS Assembly Environment set up on your local machine. If you do not have a MIPS Assembly Environment, you can download one here: [MIPS Assembly Environment](https://courses.missouristate.edu/kenvollmar/mars/download.htm)
 
-After that download the game onto your local machine, and run the file in the Environment and thats it!
+After that download the game onto your local machine, and run the file in the Environment and thats it! If you need extra help, please refer to the UserManual.docx in the repository.
 
 ## Contributors
 - Jahnzeb Bastaki
